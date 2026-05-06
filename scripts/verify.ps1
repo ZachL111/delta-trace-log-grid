@@ -63,3 +63,9 @@ scalac -d build/classes src/Policy.scala src/DomainReview.scala tests/Test.scala
 scala -cp build/classes TestRunner
 
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-delta-trace-log-detail.ps1
+
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-delta-trace-log-properties.ps1
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-delta-trace-log-golden.ps1
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

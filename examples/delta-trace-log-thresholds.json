@@ -1,0 +1,17 @@
+{
+  "repo": "delta-trace-log-grid",
+  "thresholds": {
+    "signal": 4,
+    "slack": 2,
+    "confidence": 1,
+    "drag": 4,
+    "ship": 167,
+    "watch": 112
+  },
+  "terms": [
+    "span volume",
+    "latency skew",
+    "signal loss",
+    "incident shape"
+  ]
+}

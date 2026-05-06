@@ -1,0 +1,73 @@
+{
+  "repo": "delta-trace-log-grid",
+  "language": "Scala",
+  "category": "Observability",
+  "goal": "Package a Scala local lab for log analysis with round-trip fixtures, lossless normalization checks, and documented operating limits.",
+  "review_model": {
+    "terms": [
+      "span volume",
+      "latency skew",
+      "signal loss",
+      "incident shape"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "span volume",
+      "signal": 40,
+      "slack": 32,
+      "drag": 24,
+      "confidence": 65,
+      "score": 105,
+      "lane": "watch"
+    },
+    {
+      "name": "stress",
+      "focus": "latency skew",
+      "signal": 63,
+      "slack": 40,
+      "drag": 24,
+      "confidence": 62,
+      "score": 156,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "signal loss",
+      "signal": 58,
+      "slack": 32,
+      "drag": 12,
+      "confidence": 49,
+      "score": 161,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "incident shape",
+      "signal": 86,
+      "slack": 36,
+      "drag": 19,
+      "confidence": 83,
+      "score": 234,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "span volume",
+      "signal": 87,
+      "slack": 42,
+      "drag": 29,
+      "confidence": 67,
+      "score": 196,
+      "lane": "ship"
+    }
+  ]
+}

@@ -59,5 +59,7 @@ foreach ($pathPattern in $knownPaths) {
 }
 
 New-Item -ItemType Directory -Force build/classes | Out-Null
-scalac -d build/classes src/Policy.scala tests/Test.scala
+scalac -d build/classes src/Policy.scala src/DomainReview.scala tests/Test.scala
 scala -cp build/classes TestRunner
+
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-delta-trace-log-detail.ps1

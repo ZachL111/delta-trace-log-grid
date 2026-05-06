@@ -1,68 +1,40 @@
 # delta-trace-log-grid
 
-`delta-trace-log-grid` treats observability as a local verification problem. The Scala implementation is intentionally narrow, but the fixtures and notes make the behavior explicit.
+`delta-trace-log-grid` keeps a focused Scala implementation around observability. The project goal is to package a Scala local lab for log analysis with round-trip fixtures, lossless normalization checks, and documented operating limits.
 
-## Delta Trace Log Grid Checkpoints
+## Reason For The Project
 
-Treat the compact fixture as the contract and the extended examples as a scratchpad. The code should stay boring enough that a change in behavior is obvious from the test output.
+I want this repository to be useful as a quick reading exercise: fixtures first, implementation second, verifier last.
 
-## What This Is For
+## Delta Trace Log Grid Review Notes
 
-This project keeps the domain idea close to the tests. That makes it useful as a reference implementation, a small experiment, or a starting point for a more specialized tool.
+The first comparison I would make is `incident shape` against `span volume` because it shows where the rule is most opinionated.
 
-## Architecture Notes
+## What It Does
 
-The design is intentionally direct: parse or construct a signal, score it, classify it, and verify the expected branch. This makes the repository useful for studying observability behavior without needing a service or database unless the language project itself is SQL. The Scala code uses case classes and a compact object API to keep the test path direct.
+- `fixtures/domain_review.csv` adds cases for span volume and latency skew.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/delta-trace-log-walkthrough.md` walks through the case spread.
+- The Scala code includes a review path for `incident shape` and `span volume`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Case Study
+## How It Is Put Together
 
-The examples are meant to be readable before they are exhaustive. They cover enough variation to show how latency and risk can pull a decision below the threshold.
+The repository has two validation layers: the original compact policy fixture and the domain review fixture. They are separate so one can change without hiding failures in the other.
 
-## Useful Pieces
+The Scala implementation avoids hidden state so fixture changes are easy to reason about.
 
-- Uses fixture data to keep log shape changes visible in code review.
-- Includes extended examples for latency summaries, including `surge` and `degraded`.
-- Documents incident slices tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-
-## Tooling
-
-Use a normal shell with Scala available on `PATH`. The verifier is written as a PowerShell script because the portfolio was assembled on Windows.
-
-## Quality Gate
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
-
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Project Layout
-
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-
-## Scope
-
-The scoring model is simple by design. More domain-specific behavior should be added through explicit adapters or extra fixture classes rather than hidden constants.
-
-## Expansion Ideas
-
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add one more observability fixture that focuses on a malformed or borderline input.
-
-## Local Workflow
+## Run It
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Check It
+
+The check exercises the source code and the review fixture. `recovery` is the high score at 234; `baseline` is the low score at 105.
+
+## Boundaries
+
+The fixture set is small enough to audit by hand. The next useful expansion is malformed input coverage, not extra surface area.
